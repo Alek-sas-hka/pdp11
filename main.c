@@ -2,19 +2,14 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdlib.h>
+#include "pdp11.h"
 
-typedef unsigned char byte;  //8 bit
-typedef unsigned int word;   //16 bit
-typedef word Adress;         //16 bit
+
+word reg[8];
 
 #define MEMSIZE (64*1024)
 
 byte mem[MEMSIZE];
-
-void b_write(Adress adr, byte b);
-byte b_read(Adress adr);
-void w_write(Adress adr, word w);
-word w_read(Adress adr);
 
 void test_mem() {
 
@@ -79,7 +74,7 @@ void load_file(const char *filename) {
 
 int main()
 {
-    load_file("test.txt");
+    load_file("test");
 }
 
 word w_read(Adress a) {
