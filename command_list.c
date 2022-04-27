@@ -44,6 +44,20 @@ Arg get_ssdd(word w) {
             res.val = w_read(res.adr);
             printf("(R%o) ", n);
             break;
+        case 2:
+            if (n == 7) {      //  #nn
+                reg[n] += 2;
+                res.adr = reg[n];
+                res.val = w_read(res.adr);
+                printf("#%o ", res.val);
+                break;
+            } else {     //  (Rn)+
+                res.adr = reg[n];
+                res.val = w_read(res.adr);
+                printf("(R%o)+ ", n);
+                reg[n] += 2;
+                break;
+            }
     }
     return res;
 }
