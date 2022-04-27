@@ -1,15 +1,14 @@
 #include <stdio.h>
-#include <assert.h>
-#include <errno.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <assert.h>
 #include "pdp11.h"
-
-
-word reg[8];
 
 #define MEMSIZE (64*1024)
 
 byte mem[MEMSIZE];
+
+word reg[8];
 
 void test_mem() {
 
@@ -59,27 +58,36 @@ void load_file(const char *filename) {
         perror(filename);
         exit(errno);
     }
+    unsigned int block_adr, N, bt;
+    while (fscanf(fin, "%x%x", &block_adr, &N) == 2 ) {
+        printf("ard=%x N=%x\n", block_adr, N);
+        for (unsigned int i = 0; i < N; i++) {
 
-    Adress block_adr;
-    word N;
-    while (fscanf(fin, "%hx", &block_adr) != EOF) {
-        fscanf(fin, "%hx", &N);
-        for (int i = 0; i < N; ++i) {
-            byte bt;
-            fscanf(fin, "%hhx", &bt);
+            fscanf(fin, "%x", &bt);
             b_write(block_adr + i, bt);
+           // printf("%u %x : %x \n", i, block_adr + i, bt);
         }
     }
 }
 
-int main()
-{
+int main() {
     load_file("test");
+    //dump();
+    run();
+    return 0;
+}
+
+void dump() {
+    for (int i = 001000; i < 001012; i += 2) {
+        word woord;
+        woord = w_read(i);
+        //printf("%06o : %06o\n", i, woord);
+    }
 }
 
 word w_read(Adress a) {
     word w = ((word)mem[a + 1]) << 8;
-    //printf("w = %x\n", w);
+   // printf("w = %x\n", w);
     w = w | mem[a];
     return w;
 }
