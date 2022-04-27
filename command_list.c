@@ -39,6 +39,11 @@ Arg get_ssdd(word w) {
             res.val = reg[n];
             printf("R%o ", n);
             break;
+        case 1:    // (Rn)
+            res.adr = reg[n];
+            res.val = w_read(res.adr);
+            printf("(R%o) ", n);
+            break;
     }
     return res;
 }
