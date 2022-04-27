@@ -4,6 +4,7 @@
 extern word reg[];
 extern byte mem[];
 extern Command cmd[];
+extern Arg ss, dd;
 
 
 void run() {
@@ -14,7 +15,8 @@ void run() {
         for (int i = 0;; ++i) {
             Command command = cmd[i];
             if ((w & command.mask) == command.opcode) {
-                get_ssdd(w);
+                ss = get_ssdd(w >> 6);
+                dd = get_ssdd(w);
                 command.do_func();
                 break;
             }

@@ -4,18 +4,22 @@
 
 extern word reg[];
 extern byte mem[];
+extern Arg ss, dd;
 
 void do_mov() {
     printf("mov \n");
+    reg[dd.adr] = ss.val;
 }
 
 void do_halt() {
-    printf("THE END!!! \n");
+    printf("halt\n");
+    print_reg();
     exit(0);
 }
 
 void do_add() {
     printf("add \n");
+    reg[dd.adr] += ss.val;
 }
 
 void do_nothing() {
@@ -58,6 +62,9 @@ Arg get_ssdd(word w) {
                 reg[n] += 2;
                 break;
             }
+        default:
+            printf("mode %o not implemented", n);
+            exit(1);
     }
     return res;
 }

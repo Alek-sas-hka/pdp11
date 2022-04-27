@@ -14,6 +14,7 @@ void w_write(Adress adr, word w);
 word w_read(Adress adr);
 void run();
 void dump();
+void print_reg();
 
 
 typedef struct {
