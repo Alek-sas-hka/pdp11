@@ -3,6 +3,12 @@
 
 #define  pc reg[7] // 8?
 
+#define HAS_SS 1
+#define HAS_DD 2
+#define HAS_SS_DD (HAS_SS | HAS_DD)
+#define HAS_NN 4
+#define HAS_R (4 << 1)
+#define HAS_NN_R (HAS_NN | HAS_R)
 
 typedef unsigned char byte;  //8 bit
 typedef unsigned short int word;   //16 bit
@@ -15,6 +21,9 @@ word w_read(Adress adr);
 void run();
 void dump();
 void print_reg();
+void set_ri(word w);
+void set_nn(word w);
+extern word ri;
 
 
 typedef struct {
@@ -22,6 +31,7 @@ typedef struct {
     word opcode;
     char * name;
     void (*do_func)(void);
+    byte parametr;
 } Command;
 
 typedef struct {

@@ -5,6 +5,9 @@
 extern word reg[];
 extern byte mem[];
 extern Arg ss, dd;
+extern byte nn;
+word ri, w;
+
 
 void do_mov() {
     printf("mov \n");
@@ -26,12 +29,31 @@ void do_nothing() {
     printf("nothing \n");
 }
 
+void set_nn(word w) {
+    nn = w & 077;
+}
+
+void set_ri(word w) {
+    ri = (w >> 6) & 07;
+}
+
+void do_sob() {
+    reg[ri] -= 1;
+    if (reg[ri] != 0 ) {
+        pc -= 2 * nn;
+    }
+}
+
+
+
 Command cmd[] = {
-        {0170000, 0010000, "mov",     do_mov},
-        {0170000, 0060000, "add",     do_add},
+        {0170000, 0010000, "mov",     do_mov, HAS_SS_DD},
+        {0170000, 0060000, "add",     do_add, HAS_SS_DD},
         {0177777, 0000000, "halt",    do_halt},
+        {0177000, 0077000, "sob",    do_sob, HAS_NN_R},
         {0000000, 0000000, "unknown", do_nothing}
 };
+
 
 Arg get_ssdd(word w) {
     Arg res;

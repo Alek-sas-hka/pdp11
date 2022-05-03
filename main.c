@@ -12,6 +12,8 @@ word reg[8];
 
 Arg ss, dd;
 
+byte nn;
+
 void test_mem() {
 
     byte b0 = 0x0a;

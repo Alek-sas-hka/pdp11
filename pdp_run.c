@@ -16,8 +16,14 @@ void run() {
         for (int i = 0;; ++i) {
             Command command = cmd[i];
             if ((w & command.mask) == command.opcode) {
-                ss = get_ssdd(w >> 6);
-                dd = get_ssdd(w);
+                if (command.parametr == HAS_SS_DD) {
+                    ss = get_ssdd(w >> 6);
+                    dd = get_ssdd(w);
+                }
+                if (command.parametr == HAS_NN_R) {
+                    set_nn(w);
+                    set_ri(w);
+                }
                 command.do_func();
                 break;
             }
