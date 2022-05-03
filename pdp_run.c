@@ -12,6 +12,7 @@ void run() {
     while (1) {
         word w = w_read(pc);
         printf("%06o %06o: ", pc, w);
+        pc += 2;
         for (int i = 0;; ++i) {
             Command command = cmd[i];
             if ((w & command.mask) == command.opcode) {
@@ -21,6 +22,5 @@ void run() {
                 break;
             }
         }
-        pc += 2;
     }
 }

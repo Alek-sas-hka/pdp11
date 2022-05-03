@@ -114,7 +114,7 @@ byte b_read(Adress adr) {
 }
 
 void print_reg() {
-    for (int i = 0; i < 7; ++i) {
-        printf("reg[%d]: %x\n", i, reg[i]);
+    for (int i = 0; i < 8; ++i) {
+        printf("reg[%d]: %o\n", i, reg[i]);
     }
 }

@@ -49,19 +49,32 @@ Arg get_ssdd(word w) {
             printf("(R%o) ", n);
             break;
         case 2:
+            res.adr = reg[n];
+            res.val = w_read(res.adr);
+            reg[n] += 2;
             if (n == 7) {      //  #nn
-                reg[n] += 2;
-                res.adr = reg[n];
-                res.val = w_read(res.adr);
                 printf("#%o ", res.val);
                 break;
             } else {     //  (Rn)+
-                res.adr = reg[n];
-                res.val = w_read(res.adr);
                 printf("(R%o)+ ", n);
-                reg[n] += 2;
                 break;
             }
+        case 3:
+            res.adr = reg[n];
+            res.adr = mem[res.adr];
+            res.val = mem[res.adr];
+            reg[n] += 2;
+            if (n == 7) {  // @#nn
+                printf("@#%o ", res.adr);
+                break;
+            } else {   // @(Rn)+
+                printf("@(R%o)+ ", n);
+                break;
+            }
+        case 4:  // -(Rn)
+            res.adr = reg[n] - 2;
+            res.val = mem[res.adr];
+            printf("-(R%o) ", n);
         default:
             printf("mode %o not implemented", n);
             exit(1);
