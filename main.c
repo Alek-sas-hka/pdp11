@@ -14,6 +14,8 @@ Arg ss, dd;
 
 byte nn;
 
+byte bflag = 0;
+
 void test_mem() {
 
     byte b0 = 0x0a;
@@ -109,9 +111,20 @@ void w_write(Adress adr, word w) {
     }
 }
 void b_write(Adress adr, byte b) {
-        mem[adr] = b;
+    if (adr < 8) {
+        if (b >> 7) {
+            reg[adr] = b + 0xff00;
+        } else {
+            reg[adr] = b;
+        }
+        return;
+    }
+    mem[adr] = b;
 }
 byte b_read(Adress adr) {
+    if (adr < 8) {
+        return (byte) reg[adr];
+    }
     return mem[adr];
 }
 

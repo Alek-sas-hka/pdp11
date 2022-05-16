@@ -6,12 +6,27 @@ extern word reg[];
 extern byte mem[];
 extern Arg ss, dd;
 extern byte nn;
+extern byte bflag;
 word ri, w;
 
+void do_clr() {
+    if (bflag) {
+        printf("clrb \n");
+        b_write(dd.adr, 0);
+        return;
+    }
+    printf("clr \n");
+    w_write(dd.adr, 0);
+}
 
 void do_mov() {
+    if (bflag) {
+        printf("movb \n");
+        b_write(dd.adr, ss.val);
+        return;
+    }
     printf("mov \n");
-    reg[dd.adr] = ss.val;
+    w_write(dd.adr, ss.val);
 }
 
 void do_halt() {
@@ -48,11 +63,12 @@ void do_sob() {
 
 
 Command cmd[] = {
-        {0170000, 0010000, "mov",     do_mov, HAS_SS_DD},
+        {0070000, 0010000, "mov",     do_mov, HAS_SS_DD | HAS_B},
         {0170000, 0060000, "add",     do_add, HAS_SS_DD},
-        {0177777, 0000000, "halt",    do_halt},
+        {0177777, 0000000, "halt",    do_halt, 0},
         {0177000, 0077000, "sob",    do_sob, HAS_NN_R},
-        {0000000, 0000000, "unknown", do_nothing}
+        {0077700, 0005000, "clr", do_clr, HAS_DD | HAS_B},
+        {0000000, 0000000, "unknown", do_nothing, 0}
 };
 
 
@@ -74,7 +90,11 @@ Arg get_ssdd(word w) {
         case 2:
             res.adr = reg[n];
             res.val = w_read(res.adr);
-            reg[n] += 2;
+            if (bflag && n != 7) {
+                reg[n] += 1;
+            } else {
+                reg[n] += 2;
+            }
             if (n == 7) {      //  #nn
                 printf("#%o ", res.val);
                 break;

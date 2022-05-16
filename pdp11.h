@@ -9,6 +9,7 @@
 #define HAS_NN 4
 #define HAS_R (4 << 1)
 #define HAS_NN_R (HAS_NN | HAS_R)
+#define HAS_B (4 << 2)
 
 typedef unsigned char byte;  //8 bit
 typedef unsigned short int word;   //16 bit
