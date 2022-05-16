@@ -5,6 +5,7 @@ extern word reg[];
 extern byte mem[];
 extern Command cmd[];
 extern Arg ss, dd;
+extern byte nn;
 
 
 void run() {
@@ -21,8 +22,10 @@ void run() {
                     dd = get_ssdd(w);
                 }
                 if (command.parametr == HAS_NN_R) {
-                    set_nn(w);
                     set_ri(w);
+                    printf("r%o ", ri);
+                    set_nn(w);
+                    printf("%o ", pc - 2 * nn);
                 }
                 command.do_func();
                 break;

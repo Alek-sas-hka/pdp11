@@ -38,6 +38,7 @@ void set_ri(word w) {
 }
 
 void do_sob() {
+    printf("sob \n");
     reg[ri] -= 1;
     if (reg[ri] != 0 ) {
         pc -= 2 * nn;
